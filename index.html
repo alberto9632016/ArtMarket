@@ -1,0 +1,88 @@
+<?php
+
+	session_start();
+
+	require 'database.php';
+	if (isset($_SESSION['user_id'])) {
+		$records = $conn->prepare('SELECT id, email, password FROM users WHERE id = :id');
+		$records->bindParam(':id', $_SESSION['user_id']);
+		$records->execute();
+		$results = $records->fetch(PDO::FETCH_ASSOC);
+
+		$user = null;
+
+		if (count($results) > 0) {
+			$user = $results;
+		}
+	}
+
+ ?>
+
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+        <meta name="viewport" content="width-device width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+		<title>ArtMarket | Bienvenidos</title>
+        <meta name="description" content="Bienvenidos a ArtMarket">
+        
+        <meta name="Keywords" content="Arte, Artistas, Venta, Pinturas">
+		<link rel="stylesheet" href="assets/css/style.css">
+         <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+        
+	</head>
+	<body>
+        
+        <header>
+        <div class="contenedor">
+            <div id="nuestroMenu">
+            <img class="logoJ" src="img/edicion.png">
+            <h1><span class="resaltado">ArtMarket</span></h1>
+            </div>
+            <nav>
+            <ul>
+                <li class="actual"><a href="index.html">Inicio</a></li>
+                
+                <li><a href=" ">¿Quiénes Somos?</a></li>
+                
+                <li><a href=" ">Obras</a></li>
+                
+                <li><a href=" ">Artistas</a></li>
+                
+                <li><a href=" ">Hazte vendedor de tus obras</a></li>
+                
+                <li><a href=" ">Contacto</a>
+                <ul>
+                    <li><a href=" ">Sugerencias</a></li>
+                    <li><a href=" ">Ubicación</a></li>
+                    
+                    </ul>
+                </li>
+                
+            </ul>
+            </nav>
+            </div>
+        
+        </header>
+
+<?php require 'partials/header.php'; ?>
+
+<?php if(!empty($user)): ?>
+	<br>Bienvenido. <?= $user['email'] ?>
+	<br>Su sesión fue iniciada Correctamente
+	<a href="logout.php">Cerrar sesión</a>
+<?php else: ?>
+
+		<h1>Bienvenido a ArtMarket Inicia Sesion o Registrarte</h1>
+
+		<button type="submit" class="boton1" ><a href="login.php">Inicio sesion</a></button> or
+		<button type="submit" class="boton1" ><a href="signup.php">Registrarse</a></button>
+	<?php endif; ?>
+        
+        <footer>ArtMarket, Copyright &copy; 2020, Valle de Santiago, Guanajuato</footer>
+        
+       <script> 
+			window.alert("Bienvenidos a ArtMarket, la tienda que te ofrece las mejores obras artísticas")
+			</script>  
+	</body>
+</html>
